@@ -1,14 +1,12 @@
 package com.cusl.projetctsanta.api;
 
+import com.cusl.projetctsanta.dto.ResultDTO;
 import com.cusl.projetctsanta.dto.StandardResponse;
 import com.cusl.projetctsanta.services.SantaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author : Udara Deshan <udaradeshan.ud@gmail.com>
@@ -23,12 +21,20 @@ public class SantaApiController {
     @Autowired
     SantaService santaService;
 
-
     @GetMapping("/count")
     public ResponseEntity<StandardResponse> getCount(){
-        int count = santaService.getCount();
+        int count = santaService.getCount(100);
         return new ResponseEntity<>(
                 new StandardResponse(201, "success", count),
+                HttpStatus.CREATED
+        );
+    }
+
+    @PutMapping
+    public ResponseEntity<StandardResponse> selectSanta(){
+        ResultDTO resultDTO = santaService.selectSanta(50, 3);
+        return new ResponseEntity<>(
+                new StandardResponse(201, "success", resultDTO),
                 HttpStatus.CREATED
         );
     }
