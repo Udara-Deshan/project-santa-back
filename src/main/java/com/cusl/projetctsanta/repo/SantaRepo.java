@@ -12,13 +12,18 @@ import java.util.List;
  * @since : 12/2/2022
  **/
 @Repository
-public interface SantaRepo extends JpaRepository<Santa, Integer> {
+public interface SantaRepo extends JpaRepository<Santa, String> {
 
-    @Query(value = "SELECT COUNT(*) from santa where refID IS NULL and id!=?1", nativeQuery = true)
-    int getCount(int id);
-    @Query(value = "UPDATE santa set refID=?2 where email=?1",nativeQuery = true)
-    boolean setSenta(String email,int refId);
+    @Query(value = "SELECT COUNT(*) from santa WHERE member_no NOT IN (SELECT refid FROM santa WHERE refid IS NOT NULL) AND member_no!=175", nativeQuery = true)
+    int getCount(String id);
+    @Query(value = "UPDATE santa set refid=?2 where member_no=?1",nativeQuery = true)
+    boolean setSenta(String memberNo,String refId);
 
-    @Query(value = "SELECT * from santa where refID IS NULL and id!=?1 order by rand()",nativeQuery = true)
-    List<Santa> getEligibleList(int id);
+    @Query(value = "SELECT * FROM santa WHERE member_no NOT IN (SELECT refid FROM santa WHERE refid IS NOT NULL)" +
+            " AND member_no!=?1 order by rand()",nativeQuery = true)
+    List<Santa> getEligibleList(String memberNo);
+
+    @Query(value = "select * from santa where member_no=?1",nativeQuery = true)
+    Santa myGifter(String memberNo);
+
 }

@@ -1,5 +1,6 @@
 package com.cusl.projetctsanta.services.impl;
 
+import com.cusl.projetctsanta.dto.MyGifterResultDTO;
 import com.cusl.projetctsanta.dto.ResultDTO;
 import com.cusl.projetctsanta.entity.Santa;
 import com.cusl.projetctsanta.repo.SantaRepo;
@@ -25,29 +26,45 @@ public class SantaServiceImpl implements SantaService {
     private SantaRepo santaRepo;
 
     @Override
-    public int getCount(int id) {
-        return santaRepo.getCount(id);
+    public int getCount(String memberNo) {
+        if (santaRepo.getReferenceById(memberNo).getRefID()==null){
+            return santaRepo.getCount(memberNo);
+        }else {
+            return -1;
+        }
     }
 
     @SneakyThrows
     @Override
     @Transactional
     @Modifying
-    public ResultDTO selectSanta(int number, int id) {
-        List<Santa> eligibleList = santaRepo.getEligibleList(id);
-        if (eligibleList.size()>=number){
-            Santa santaSelected = eligibleList.get(number);
-            if (santaRepo.existsById(id)) {
-                Santa byId = santaRepo.getById(id);
-                byId.setRefID(santaSelected.getId());
-                 santaRepo.saveAndFlush(byId);
-                return new ResultDTO(santaSelected.getEmail(),santaSelected.getName());
-            }
+    public ResultDTO selectSanta(int number, String memberNo) {
+        if (santaRepo.existsById(memberNo) && santaRepo.getCount(memberNo) > 0) {
+            List<Santa> eligibleList = santaRepo.getEligibleList(memberNo);
+            if (eligibleList.size() >= number) {
+                Santa santaSelected = eligibleList.get(number-1);
+                Santa byId = santaRepo.getReferenceById(memberNo);
+                byId.setRefID(santaSelected.getMemberNo());
+                santaRepo.saveAndFlush(byId);
+                return new ResultDTO(santaSelected.getFullName(),"");
 //            santaRepo.setSenta(santaSelected.getEmail(),santaSelected.getRefID());
-        }else {
-            throw new Exception();
+            } else {
+                throw new Exception();
+            }
         }
+        return null;
+    }
 
+    @Override
+    public MyGifterResultDTO myGifter(String memberNo) {
+        if (santaRepo.existsById(memberNo)){
+            Santa referenceById = santaRepo.getReferenceById(memberNo);
+            if (referenceById.getRefID()!=null){
+                Santa santa = santaRepo.myGifter(referenceById.getRefID());
+                return new MyGifterResultDTO(santa.getFullName(),referenceById.getFullName());
+            }
+            return new MyGifterResultDTO(null,referenceById.getFullName());
+        }
         return null;
     }
 }

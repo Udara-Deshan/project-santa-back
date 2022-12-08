@@ -6,15 +6,13 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author : Udara Deshan <udaradeshan.ud@gmail.com>
- * @since : 12/2/2022
+ * @since : 12/7/2022
  **/
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ResultDTO {
+public class MyGifterResultDTO {
+    private String gifterName;
     private String fullName;
-    private String initName;
-
-//    private String surName;
-
 }

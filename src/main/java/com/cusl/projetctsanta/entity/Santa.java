@@ -20,13 +20,13 @@ import javax.persistence.*;
 @Entity(name = "santa")
 public class Santa {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "email",nullable = false)
-    private String email;
-    @Column(name = "name",nullable = false)
-    private String name;
+    @Column(name = "memberNo",nullable = false)
+    private String memberNo;
+    @Column(name = "initName",nullable = false)
+    private String initName;
+    @Column(name = "fullName",nullable = false)
+    private String fullName;
     @Column(name = "refID",nullable = true)
-    private int refID;
+    private String refID;
 
 }

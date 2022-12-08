@@ -1,5 +1,6 @@
 package com.cusl.projetctsanta.services;
 
+import com.cusl.projetctsanta.dto.MyGifterResultDTO;
 import com.cusl.projetctsanta.dto.ResultDTO;
 import com.cusl.projetctsanta.entity.Santa;
 
@@ -9,8 +10,11 @@ import com.cusl.projetctsanta.entity.Santa;
  **/
 public interface SantaService {
 
-    int getCount(int id);
+    int getCount(String memberNo);
 
-    ResultDTO selectSanta(int number, int id);
+    ResultDTO selectSanta(int number,String memberNo);
+
+    MyGifterResultDTO myGifter(String memberNo);
+
 
 }
