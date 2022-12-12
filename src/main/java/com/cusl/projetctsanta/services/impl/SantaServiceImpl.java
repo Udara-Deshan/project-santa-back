@@ -6,7 +6,6 @@ import com.cusl.projetctsanta.entity.Santa;
 import com.cusl.projetctsanta.repo.SantaRepo;
 import com.cusl.projetctsanta.services.SantaService;
 import lombok.SneakyThrows;
-import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
