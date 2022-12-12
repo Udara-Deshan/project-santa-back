@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface SantaRepo extends JpaRepository<Santa, String> {
 
-    @Query(value = "SELECT COUNT(*) from santa WHERE member_no NOT IN (SELECT refid FROM santa WHERE refid IS NOT NULL) AND member_no!=175", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) from santa WHERE member_no NOT IN (SELECT refid FROM santa WHERE refid IS NOT NULL) AND member_no!=?1", nativeQuery = true)
     int getCount(String id);
     @Query(value = "UPDATE santa set refid=?2 where member_no=?1",nativeQuery = true)
     boolean setSenta(String memberNo,String refId);
@@ -26,4 +26,6 @@ public interface SantaRepo extends JpaRepository<Santa, String> {
     @Query(value = "select * from santa where member_no=?1",nativeQuery = true)
     Santa myGifter(String memberNo);
 
+    @Query(value = "SELECT IF(`init_name`=?2,TRUE,FALSE) FROM santa WHERE `member_no`=?1",nativeQuery = true)
+    int verifyUser(String memberNo,String name);
 }

@@ -25,46 +25,69 @@ public class SantaServiceImpl implements SantaService {
     @Autowired
     private SantaRepo santaRepo;
 
+    @SneakyThrows
     @Override
-    public int getCount(String memberNo) {
-        if (santaRepo.getReferenceById(memberNo).getRefID()==null){
-            return santaRepo.getCount(memberNo);
-        }else {
-            return -1;
+    public int getCount(String memberNo, String name) {
+        System.out.println("name = " + name);
+        System.out.println("namesss = " + santaRepo.verifyUser(memberNo, name));
+        if (santaRepo.verifyUser(memberNo, name) > 0) {
+            if (santaRepo.getReferenceById(memberNo).getRefID() == null) {
+                return santaRepo.getCount(memberNo);
+            } else {
+                return -1;
+            }
+        } else {
+            throw new RuntimeException("Member Number Or Name is Incorrect Try Again");
         }
+
     }
 
     @SneakyThrows
     @Override
     @Transactional
     @Modifying
-    public ResultDTO selectSanta(int number, String memberNo) {
-        if (santaRepo.existsById(memberNo) && santaRepo.getCount(memberNo) > 0) {
-            List<Santa> eligibleList = santaRepo.getEligibleList(memberNo);
-            if (eligibleList.size() >= number) {
-                Santa santaSelected = eligibleList.get(number-1);
-                Santa byId = santaRepo.getReferenceById(memberNo);
-                byId.setRefID(santaSelected.getMemberNo());
-                santaRepo.saveAndFlush(byId);
-                return new ResultDTO(santaSelected.getFullName(),"");
+    public ResultDTO selectSanta(int number, String memberNo, String name) {
+        System.out.println("name = " + name);
+        System.out.println("namesss = " + santaRepo.verifyUser(memberNo, name));
+        if (santaRepo.verifyUser(memberNo, name) > 0) {
+            if (santaRepo.existsById(memberNo) && santaRepo.getCount(memberNo) > 0) {
+                List<Santa> eligibleList = santaRepo.getEligibleList(memberNo);
+                if (eligibleList.size() >= number) {
+                    Santa santaSelected = eligibleList.get(number - 1);
+                    Santa byId = santaRepo.getReferenceById(memberNo);
+                    byId.setRefID(santaSelected.getMemberNo());
+                    santaRepo.saveAndFlush(byId);
+                    return new ResultDTO(santaSelected.getFullName(), "");
 //            santaRepo.setSenta(santaSelected.getEmail(),santaSelected.getRefID());
-            } else {
-                throw new Exception();
+                } else {
+                    throw new RuntimeException("Member Number Or Name is Incorrect Try Again");
+                }
             }
+            return null;
+        } else {
+            throw new RuntimeException("Member Number Or Name is Incorrect Try Again");
         }
-        return null;
+
     }
 
+    @SneakyThrows
     @Override
-    public MyGifterResultDTO myGifter(String memberNo) {
-        if (santaRepo.existsById(memberNo)){
-            Santa referenceById = santaRepo.getReferenceById(memberNo);
-            if (referenceById.getRefID()!=null){
-                Santa santa = santaRepo.myGifter(referenceById.getRefID());
-                return new MyGifterResultDTO(santa.getFullName(),referenceById.getFullName());
+    public MyGifterResultDTO myGifter(String memberNo, String name) {
+        System.out.println("name = " + name);
+        System.out.println("namesss = " + santaRepo.verifyUser(memberNo, name));
+
+        if (santaRepo.verifyUser(memberNo, name) > 0) {
+            if (santaRepo.existsById(memberNo)) {
+                Santa referenceById = santaRepo.getReferenceById(memberNo);
+                if (referenceById.getRefID() != null) {
+                    Santa santa = santaRepo.myGifter(referenceById.getRefID());
+                    return new MyGifterResultDTO(santa.getFullName(), referenceById.getFullName());
+                }
+                return new MyGifterResultDTO(null, referenceById.getFullName());
             }
-            return new MyGifterResultDTO(null,referenceById.getFullName());
+            throw new RuntimeException("Member Number Or Name is Incorrect Try Again");
+        } else {
+            throw new RuntimeException("Member Number Or Name is Incorrect Try Again");
         }
-        return null;
     }
 }

@@ -10,11 +10,11 @@ import com.cusl.projetctsanta.entity.Santa;
  **/
 public interface SantaService {
 
-    int getCount(String memberNo);
+    int getCount(String memberNo,String name);
 
-    ResultDTO selectSanta(int number,String memberNo);
+    ResultDTO selectSanta(int number,String memberNo,String name);
 
-    MyGifterResultDTO myGifter(String memberNo);
+    MyGifterResultDTO myGifter(String memberNo,String name);
 
 
 }

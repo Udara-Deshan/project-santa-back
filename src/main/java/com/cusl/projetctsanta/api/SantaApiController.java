@@ -23,8 +23,9 @@ public class SantaApiController {
     SantaService santaService;
 
     @GetMapping("/count")
-    public ResponseEntity<StandardResponse> getCount(@RequestParam String memberNo) {
-        int count = santaService.getCount(memberNo);
+    public ResponseEntity<StandardResponse> getCount(@RequestParam String memberNo,
+                                                     @RequestParam String initName) {
+        int count = santaService.getCount(memberNo,initName);
         return new ResponseEntity<>(
                 new StandardResponse(201, "success", count),
                 HttpStatus.CREATED
@@ -33,9 +34,10 @@ public class SantaApiController {
 
     @PutMapping
     public ResponseEntity<StandardResponse> selectSanta(@RequestParam int number,
-                                                        @RequestParam String memberNo
+                                                        @RequestParam String memberNo,
+                                                        @RequestParam String initName
                                                         ) {
-        ResultDTO resultDTO = santaService.selectSanta(number,memberNo);
+        ResultDTO resultDTO = santaService.selectSanta(number,memberNo,initName);
         return new ResponseEntity<>(
                 new StandardResponse(201, "success", resultDTO),
                 HttpStatus.CREATED
@@ -44,8 +46,9 @@ public class SantaApiController {
 
     @GetMapping
     public ResponseEntity<StandardResponse> santaLogin(
-            @RequestParam String memberNo){
-        MyGifterResultDTO resultDTO = santaService.myGifter(memberNo);
+            @RequestParam String memberNo,
+            @RequestParam String initName){
+        MyGifterResultDTO resultDTO = santaService.myGifter(memberNo,initName);
         return new ResponseEntity<>(
                 new StandardResponse(201, "success", resultDTO),
                 HttpStatus.CREATED
