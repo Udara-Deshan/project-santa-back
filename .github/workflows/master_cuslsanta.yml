@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'cuslsanta'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_85C667974DD34D0CB4B5A710E24084E9 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ED5B2F76DE92418EA8D984F85173D568 }}
           package: '*.jar'
