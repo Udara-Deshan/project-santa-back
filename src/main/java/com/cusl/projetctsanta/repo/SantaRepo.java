@@ -26,6 +26,6 @@ public interface SantaRepo extends JpaRepository<Santa, String> {
     @Query(value = "select * from santa where member_no=?1",nativeQuery = true)
     Santa myGifter(String memberNo);
 
-    @Query(value = "SELECT IF(`init_name`=?2,TRUE,FALSE) FROM santa WHERE `member_no`=?1",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM santa WHERE `member_no`=?1 AND `init_name`=?2",nativeQuery = true)
     int verifyUser(String memberNo,String name);
 }
